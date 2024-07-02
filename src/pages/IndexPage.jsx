@@ -1,10 +1,11 @@
+// pages/IndexPage.jsx
 import React, { useState, useEffect } from 'react';
 
 const IndexPage = () => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/transactions`)
+    fetch(`${import.meta.env.VITE_API_URL}`)
       .then((response) => response.json())
       .then((data) => setTransactions(data));
   }, []);

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 const NavBar = () => (
   <nav>
-    <h1>Budgtr</h1>
-    <Link to='/new'>Create New Transaction</Link>
+    <h1> Budgtr </h1>
+    <Link to='/new'> Create New Transaction </Link>
   </nav>
 );
 

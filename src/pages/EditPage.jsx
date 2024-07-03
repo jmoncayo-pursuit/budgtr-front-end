@@ -1,7 +1,8 @@
-// EditPage.jsx
+// /pages/EditPage.jsx
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import '../styles/main.css'
 
 const EditPage = () => {
   const { id } = useParams();
@@ -92,7 +93,9 @@ const EditPage = () => {
             required
           />
         </label>
-        <button type='submit'>Update</button>
+        <button className='save-transaction-button' type='submit'>
+          Update
+        </button>
       </form>
     </div>
   );

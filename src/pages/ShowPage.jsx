@@ -1,25 +1,26 @@
 // pages/ShowPage.jsx
+// ShowPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/ShowPage.css';
 
 const ShowPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [transaction, setTransaction] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTransaction = async () => {
       const url = `${import.meta.env.VITE_API_URL}/transactions/${id}`;
-      console.log(`Fetching from: ${url}`);
       try {
         const response = await fetch(url);
-        const text = await response.text(); // Read the response as text
+        const text = await response.text();
         try {
-          const data = JSON.parse(text); // Attempt to parse as JSON
+          const data = JSON.parse(text);
           setTransaction(data);
         } catch (jsonError) {
-          throw new Error(`Invalid JSON: ${text}`); // Throw if not valid JSON
+          throw new Error(`Invalid JSON: ${text}`);
         }
       } catch (err) {
         setError(err.message);
@@ -56,6 +57,7 @@ const ShowPage = () => {
         <p>
           <strong>Category:</strong> {transaction.category}
         </p>
+        <button className='save-transaction-button' onClick={() => navigate(`/edit/${transaction.id}`)}> Edit </button>
       </div>
     </div>
   );

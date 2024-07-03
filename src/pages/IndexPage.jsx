@@ -32,7 +32,7 @@ const IndexPage = () => {
   };
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div> Error: {error }</div>;
   }
 
   const calculateTotal = () => {

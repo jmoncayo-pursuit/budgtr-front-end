@@ -1,4 +1,4 @@
-// pages/NewPage.jsx
+// NewPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const NewPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch(`${import.meta.env.VITE_API_URL}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const NewPage = () => {
   return (
     <div>
       <h2>New Transaction</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='transaction-form' onSubmit={handleSubmit}>
         <label>
           Item Name:
           <input

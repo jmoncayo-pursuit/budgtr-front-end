@@ -1,10 +1,18 @@
+// NavBar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './NavBar.css';
 
 const NavBar = () => (
   <nav>
-    <h1> Budgtr </h1>
-    <Link to='/new'> Create New Transaction </Link>
+    <ul>
+      <li>
+        <Link to='/'>Home</Link>
+      </li>
+      <li>
+        <Link to='/new'>New Transaction</Link>
+      </li>
+    </ul>
   </nav>
 );
 

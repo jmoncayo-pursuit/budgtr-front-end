@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 10px;
+}
+
+.transaction-form {
+  margin-top: 20px;
+}
+
+.transaction-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.transaction-form input {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.transaction-form button {
+  background-color: #fe3c96;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.transaction-form button:hover {
+  background-color: #fe3c95;
+}

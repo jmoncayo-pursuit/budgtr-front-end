@@ -1,4 +1,5 @@
-// pages/EditPage.jsx
+// EditPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -26,7 +27,7 @@ const EditPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${import.meta.env.VITE_API_URL}/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/transactions/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +41,7 @@ const EditPage = () => {
   return (
     <div>
       <h2>Edit Transaction</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='transaction-form' onSubmit={handleSubmit}>
         <label>
           Item Name:
           <input
@@ -91,7 +92,7 @@ const EditPage = () => {
             required
           />
         </label>
-        <button type='submit'> Update </button>
+        <button type='submit'>Update</button>
       </form>
     </div>
   );

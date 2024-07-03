@@ -5,7 +5,7 @@ import '../styles/NavBar.css';
 const NavBar = () => (
   <nav>
     <Link to='/' className='title-header'>
-      Budget App
+      Budgtr App
     </Link>
     <ul>
       <li>

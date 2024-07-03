@@ -1,0 +1,61 @@
+/* styles/IndexPages.css */
+.index-page {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.transactions-table th, .transactions-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.transactions-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.transactions-table tr:hover {
+  background-color: #ddd;
+}
+
+.transactions-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  /* background-color: #4CAF50; */
+  color: white;
+}
+
+.transactions-table a {
+  color: #2eb2dd;
+  text-decoration: underline;
+}
+
+.transactions-table a:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 2em;
+  font-weight: 200;
+}
+.save-transaction-button {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  margin: 0 20px 0 0; 
+  border: solid 1px black;
+  border-radius: 5px;
+  width: 12em;
+  cursor: pointer;
+}
+
+.save-transaction-button:hover {
+  background-color: #acf4da;
+}
+

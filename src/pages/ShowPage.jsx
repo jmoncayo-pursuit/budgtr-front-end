@@ -1,6 +1,7 @@
-// ShowPage.jsx
+// pages/ShowPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import '../styles/ShowPage.css';
 
 const ShowPage = () => {
   const { id } = useParams();
@@ -37,23 +38,25 @@ const ShowPage = () => {
   }
 
   return (
-    <div>
-      <h2>Transaction Details</h2>
-      <p>
-        <strong>Item Name:</strong> {transaction.item_name}
-      </p>
-      <p>
-        <strong>Amount:</strong> ${transaction.amount}
-      </p>
-      <p>
-        <strong>Date:</strong> {transaction.date}
-      </p>
-      <p>
-        <strong>From:</strong> {transaction.from}
-      </p>
-      <p>
-        <strong>Category:</strong> {transaction.category}
-      </p>
+    <div className='transaction-details-container'>
+      <h2 className='title'>Transaction Details</h2>
+      <div className='transaction-details'>
+        <p>
+          <strong>Item Name:</strong> {transaction.item_name}
+        </p>
+        <p>
+          <strong>Amount:</strong> ${transaction.amount}
+        </p>
+        <p>
+          <strong>Date:</strong> {transaction.date}
+        </p>
+        <p>
+          <strong>From:</strong> {transaction.from}
+        </p>
+        <p>
+          <strong>Category:</strong> {transaction.category}
+        </p>
+      </div>
     </div>
   );
 };

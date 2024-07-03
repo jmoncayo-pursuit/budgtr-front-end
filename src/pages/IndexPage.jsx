@@ -1,5 +1,7 @@
-//IndexPage.jsx
+// pages/IndexPage.jsx
+
 import React, { useState, useEffect } from 'react';
+import '../styles/IndexPage.css';
 
 const IndexPage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -23,31 +25,37 @@ const IndexPage = () => {
     fetchTransactions();
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { month: 'numeric', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
 
+  const calculateTotal = () => {
+    return transactions.reduce(
+      (total, transaction) => total + Number(transaction.amount),
+      0
+    );
+  };
+
   return (
-    <div>
-      <h2>All Transactions</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Item Name</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>From</th>
-            <th>Category</th>
-          </tr>
-        </thead>
+    <div className='index-page'>
+      <h2 className='title'>Bank Account Total: ${calculateTotal()}</h2>
+      <table className='transactions-table'>
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
-              <td>{transaction.item_name}</td>
-              <td>${transaction.amount}</td>
-              <td>{transaction.date}</td>
-              <td>{transaction.from}</td>
-              <td>{transaction.category}</td>
+              <td>{formatDate(transaction.date)}</td>
+              <td>
+                <a href={`/transactions/${transaction.id}`}>
+                  {transaction.item_name}
+                </a>
+              </td>
+              <td>{transaction.amount}</td>
             </tr>
           ))}
         </tbody>

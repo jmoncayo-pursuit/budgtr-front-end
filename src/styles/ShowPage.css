@@ -1,0 +1,31 @@
+ /* styles/ShowPage.css  */
+.transaction-details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  margin: auto;
+  max-width: 600px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-details {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.transaction-details p {
+  margin: 0.5rem 0;
+}
+
+.title {
+  font-size: 2em;
+  font-weight: 200;
+  margin-bottom: 1rem;
+  text-align: center;
+}

@@ -1,16 +1,17 @@
-// NavBar.jsx
-import React from 'react';
+// components/NavBar.jsx
 import { Link } from 'react-router-dom';
-import './NavBar.css';
+import '../styles/NavBar.css';
 
 const NavBar = () => (
   <nav>
+    <Link to='/' className='title-header'>
+      Budget App
+    </Link>
     <ul>
       <li>
-        <Link to='/'>Home</Link>
-      </li>
-      <li>
-        <Link to='/new'>New Transaction</Link>
+        <Link to='/new' className='new-transaction-button'>
+          New Transaction
+        </Link>
       </li>
     </ul>
   </nav>

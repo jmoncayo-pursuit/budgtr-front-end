@@ -37,7 +37,7 @@ const NewPage = () => {
 
   return (
     <div>
-      <h2>New Transaction</h2>
+      <h2 className='title'> New Transaction </h2>
       <form className='transaction-form' onSubmit={handleSubmit}>
         <label>
           Item Name:
@@ -89,7 +89,9 @@ const NewPage = () => {
             required
           />
         </label>
-        <button type='submit'>Save</button>
+        <button className='save-transaction-button' type='submit'>
+          Create New Item
+        </button>
       </form>
     </div>
   );

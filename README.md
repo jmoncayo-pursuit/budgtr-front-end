@@ -28,4 +28,3 @@ To run this project locally, follow these steps:
 1. Clone the Repository:
    ```bash
    git clone https://github.com/jmoncayo-pursuit/budgtr-front-end.git
-   cd budgtr-front-end

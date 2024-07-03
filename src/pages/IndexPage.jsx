@@ -51,9 +51,9 @@ const IndexPage = () => {
             <tr key={transaction.id}>
               <td>{formatDate(transaction.date)}</td>
               <td>
-                <a href={`/transactions/${transaction.id}`}>
+                <Link to={`/transactions/${transaction.id}`} >
                   {transaction.item_name}
-                </a>
+                </Link>
               </td>
               <td>{transaction.amount}</td>
             </tr>

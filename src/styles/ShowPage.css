@@ -30,7 +30,7 @@
   text-align: center;
 }
 
-.save-transaction-button {
+.transaction-button {
   background-color: white;
   color: black;
   padding: 10px 20px;
@@ -41,6 +41,14 @@
   cursor: pointer;
 }
 
-.save-transaction-button:hover {
+.transaction-button:hover {
   background-color: #acf4da;
+}
+
+.confirmation-message {
+  background-color: lightgreen;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
 }

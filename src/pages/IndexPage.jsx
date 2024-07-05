@@ -33,7 +33,7 @@ const IndexPage = () => {
   };
 
   if (error) {
-    return <div> Error: {error }</div>;
+    return <div> Error: {error}</div>;
   }
 
   const calculateTotal = () => {
@@ -42,17 +42,23 @@ const IndexPage = () => {
       0
     );
   };
-
+  const getTotalClass = (total) => {
+    if (total > 100) return 'positive';
+    if (total >= 0) return 'neutral';
+    return 'negative';
+  };
   return (
     <div className='index-page'>
-      <h2 className='title'>Bank Account Total: ${calculateTotal()}</h2>
+      <h2 className={`title ${getTotalClass(calculateTotal())}`}>
+        Bank Account Total: ${calculateTotal()}
+      </h2>
       <table className='transactions-table'>
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
               <td>{formatDate(transaction.date)}</td>
               <td>
-                <Link to={`/transactions/${transaction.id}`} >
+                <Link to={`/transactions/${transaction.id}`}>
                   {transaction.item_name}
                 </Link>
               </td>

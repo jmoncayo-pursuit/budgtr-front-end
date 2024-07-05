@@ -58,3 +58,6 @@
   background-color: #acf4da;
 }
 
+.positive { color: green; }
+.neutral { color: yellow; }
+.negative { color: red; }

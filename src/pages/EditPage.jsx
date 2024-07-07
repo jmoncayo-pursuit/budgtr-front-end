@@ -1,8 +1,8 @@
-// /pages/EditPage.jsx
-
+// pages/EditPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../styles/main.css'
+import CategorySelect from '../components/CategorySelect';
+import '../styles/main.css';
 
 const EditPage = () => {
   const { id } = useParams();
@@ -14,30 +14,99 @@ const EditPage = () => {
     from: '',
     category: '',
   });
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/transactions/${id}`)
-      .then((response) => response.json())
-      .then((data) => setFormData(data));
+    const fetchTransaction = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/transactions/${id}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        // Format the date string
+        const formattedDate = new Date(data.date).toISOString().split('T')[0];
+        setFormData({ ...data, date: formattedDate });
+        setIsLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchTransaction();
   }, [id]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/categories`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCategories(data);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    // Destructure only if 'name' is defined
+    if (e.target.name) {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetch(`${import.meta.env.VITE_API_URL}/transactions/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    }).then(() => {
-      navigate('/');
-    });
+  const handleCategoryChange = (value) => {
+    // Update the category directly
+    setFormData({ ...formData, category: value });
   };
+
+  const handleAddCategory = (newCategory) => {
+    setCategories([...categories, newCategory]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/transactions/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  if (isLoading) {
+    return <div className='loading-spinner'>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className='error-message'>Error: {error}</div>;
+  }
 
   return (
     <div>
@@ -83,16 +152,11 @@ const EditPage = () => {
             required
           />
         </label>
-        <label>
-          Category:
-          <input
-            type='text'
-            name='category'
-            value={formData.category}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <CategorySelect
+          selectedCategory={formData.category}
+          onCategoryChange={handleCategoryChange}
+          onAddCategory={handleAddCategory}
+        />
         <button className='save-transaction-button' type='submit'>
           Update
         </button>

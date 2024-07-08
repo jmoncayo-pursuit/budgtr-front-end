@@ -61,3 +61,7 @@
 .positive { color: green; }
 .neutral { color: yellow; }
 .negative { color: red; }
+
+.login-message {
+  margin-left: 3em;
+}

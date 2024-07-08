@@ -100,7 +100,10 @@ const NewPage = () => {
 
         <label>
           Category:
-          <select value={newTransaction.category} onChange={handleCategoryChange}>
+          <select
+            value={newTransaction.category}
+            onChange={handleCategoryChange}
+          >
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -116,10 +119,12 @@ const NewPage = () => {
             value={newCategory}
             onChange={handleNewCategoryChange}
           />
-          <button onClick={handleAddCategory}>Add Category</button>
+          <button className='transaction-button' onClick={handleAddCategory}>
+            Add Category
+          </button>
         </div>
 
-        <button className='save-transaction-button' type='submit'>
+        <button className='transaction-button' type='submit'>
           Create New Item
         </button>
       </form>

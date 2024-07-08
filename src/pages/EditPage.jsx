@@ -1,12 +1,15 @@
 // pages/EditPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CategorySelect from '../components/CategorySelect';
 import '../styles/main.css';
+import { AuthContext } from '../context/AuthContext';
 
 const EditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext); // Access user from context
+
   const [formData, setFormData] = useState({
     item_name: '',
     amount: '',
@@ -62,15 +65,13 @@ const EditPage = () => {
   }, []);
 
   const handleChange = (e) => {
-    // Destructure only if 'name' is defined
-    if (e.target.name) {
-      const { name, value } = e.target;
+    const { name, value } = e.target;
+    if (name) {
       setFormData({ ...formData, [name]: value });
     }
   };
 
   const handleCategoryChange = (value) => {
-    // Update the category directly
     setFormData({ ...formData, category: value });
   };
 
@@ -87,6 +88,7 @@ const EditPage = () => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`, // Add Authorization header
           },
           body: JSON.stringify(formData),
         }

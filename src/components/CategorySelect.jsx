@@ -1,11 +1,13 @@
 // components/CategorySelect.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const CategorySelect = ({
   selectedCategory,
   onCategoryChange,
   onAddCategory,
 }) => {
+  const { user } = useContext(AuthContext); // Access user from context
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
 
@@ -44,6 +46,7 @@ const CategorySelect = ({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`, // Add Authorization header
           },
           body: JSON.stringify({ category: newCategory }),
         }

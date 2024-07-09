@@ -1,5 +1,4 @@
 // components/NavBar.jsx
-// components/NavBar.jsx
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/NavBar.css';
 import { AuthContext } from '../context/AuthContext'; 
@@ -33,7 +32,7 @@ const NavBar = () => {
           <>
             <li>
               <Link to='/new' className='new-transaction-button'>
-                New Transaction
+                Transaction?
               </Link>
             </li>
             <li>

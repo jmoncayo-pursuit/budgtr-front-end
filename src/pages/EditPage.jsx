@@ -1,16 +1,12 @@
 // pages/EditPage.jsx
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CategorySelect from '../components/CategorySelect';
-import '../styles/main.css';
-import { AuthContext } from '../context/AuthContext';
 
 const EditPage = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext); // Access user from context
-
-  const [formData, setFormData] = useState({
+  const { id } = useParams();
+  const [transaction, setTransaction] = useState({
     item_name: '',
     amount: '',
     date: '',
@@ -18,42 +14,38 @@ const EditPage = () => {
     category: '',
   });
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [newCategory, setNewCategory] = useState('');
 
   useEffect(() => {
+    // Fetch the transaction details
     const fetchTransaction = async () => {
-      setIsLoading(true);
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/transactions/${id}`
+          `${import.meta.env.VITE_API_URL}/transactions/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
         const data = await response.json();
-        // Format the date string
-        const formattedDate = new Date(data.date).toISOString().split('T')[0];
-        setFormData({ ...data, date: formattedDate });
-        setIsLoading(false);
+        setTransaction(data);
       } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
+        console.error('Error fetching transaction:', err);
       }
     };
 
-    fetchTransaction();
-  }, [id]);
-
-  useEffect(() => {
+    // Fetch categories
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/categories`
+          `${import.meta.env.VITE_API_URL}/categories`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
         const data = await response.json();
         setCategories(data);
       } catch (err) {
@@ -61,65 +53,79 @@ const EditPage = () => {
       }
     };
 
+    fetchTransaction();
     fetchCategories();
-  }, []);
+  }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name) {
-      setFormData({ ...formData, [name]: value });
-    }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setTransaction((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  const handleCategoryChange = (value) => {
-    setFormData({ ...formData, category: value });
+  const handleCategoryChange = (event) => {
+    setTransaction((prevState) => ({
+      ...prevState,
+      category: event.target.value,
+    }));
   };
 
-  const handleAddCategory = (newCategory) => {
-    setCategories([...categories, newCategory]);
+  const handleNewCategoryChange = (event) => {
+    setNewCategory(event.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleAddCategory = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/transactions/${id}`,
+        `${import.meta.env.VITE_API_URL}/categories`,
         {
-          method: 'PUT',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`, // Add Authorization header
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ category: newCategory }),
         }
       );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      navigate('/');
+      const data = await response.json();
+      setCategories([...categories, data.category]);
+      setNewCategory('');
     } catch (err) {
-      setError(err.message);
+      console.error('Error adding category:', err);
     }
   };
 
-  if (isLoading) {
-    return <div className='loading-spinner'>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className='error-message'>Error: {error}</div>;
-  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch(`${import.meta.env.VITE_API_URL}/transactions/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(transaction),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        navigate('/');
+      })
+      .catch((err) => {
+        console.error('Error updating transaction:', err);
+      });
+  };
 
   return (
     <div>
       <h2>Edit Transaction</h2>
-      <form className='transaction-form' onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label>
           Item Name:
           <input
             type='text'
             name='item_name'
-            value={formData.item_name}
+            value={transaction.item_name}
             onChange={handleChange}
             required
           />
@@ -129,7 +135,7 @@ const EditPage = () => {
           <input
             type='number'
             name='amount'
-            value={formData.amount}
+            value={transaction.amount}
             onChange={handleChange}
             required
           />
@@ -139,7 +145,7 @@ const EditPage = () => {
           <input
             type='date'
             name='date'
-            value={formData.date}
+            value={transaction.date}
             onChange={handleChange}
             required
           />
@@ -149,18 +155,37 @@ const EditPage = () => {
           <input
             type='text'
             name='from'
-            value={formData.from}
+            value={transaction.from}
             onChange={handleChange}
             required
           />
         </label>
-        <CategorySelect
-          selectedCategory={formData.category}
-          onCategoryChange={handleCategoryChange}
-          onAddCategory={handleAddCategory}
-        />
+        <label>
+          Category:
+          <CategorySelect
+            categories={categories}
+            value={transaction.category}
+            onChange={handleCategoryChange}
+          />
+        </label>
+        <div>
+          <input
+            type='text'
+            placeholder='New Category'
+            value={newCategory}
+            onChange={handleNewCategoryChange}
+          />
+          <button
+            type='button'
+            className='save-transaction-button'
+            onClick={handleAddCategory}
+          >
+            Add Category
+          </button>
+        </div>
         <button className='save-transaction-button' type='submit'>
-          Update
+        
+          Update Item
         </button>
       </form>
     </div>
